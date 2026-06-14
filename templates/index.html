@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <title>階層的トピック検索</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    body { font-family: "Yu Gothic", sans-serif; background-color: #fafafa; }
+    #tree { width: 100%; height: 800px; border: 1px solid #ccc; background: #fff; margin-top: 10px; }
+    .node:hover ellipse { stroke: #ff5722; stroke-width: 3; }
+    text { font-size: 13px; pointer-events: none; }
+  </style>
+</head>
+
+<body>
+  <center>
+    <h2>階層的トピック提示システム</h2>
+    <input id="rootInput" type="text" placeholder="検索クエリを入力" size="40">
+    <button onclick="initTree()">検索</button>
+  </center>
+  <div id="tree"></div>
+
+  <script src="/static/tree.js"></script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>階層型サブトピックデモ</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="{{ url_for('static', filename='tree.js') }}"></script>
+  <style>
+    :root {
+      --bg: #fafafa;
+      --fg: #222;
+      --panel: #ffffff;
+      --line: #e8e8ef;
+    }
+    body { font-family: "Helvetica","Yu Gothic",sans-serif; margin: 0; color: var(--fg); background: var(--bg); }
+    header {
+      display: grid;
+      grid-template-columns: minmax(280px, 420px) auto auto auto auto auto auto 1fr;
+      gap: 8px;
+      align-items: center;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--line);
+      background: var(--panel);
+      position: sticky; top: 0; z-index: 10;
+    }
+    #q { padding: 8px 10px; font-size: 14px; width: 100%; border:1px solid #bbb; border-radius:8px; background:#fff; }
+    button {
+      padding: 8px 12px; font-size: 13px; cursor: pointer;
+      border-radius: 8px; border: 1px solid #999; background: #fff;
+    }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    #chips { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+    .chip {
+      display:inline-flex; align-items:center; gap:6px; padding:6px 10px;
+      border-radius:999px; border:1px solid #c5d0ff; background:#e9efff; font-size:13px; cursor:pointer;
+    }
+    .chip:hover { background:#dfe7ff; }
+    #hint { grid-column: 1 / -1; color:#666; font-size:12px; padding-top: 4px; }
+
+    #main { padding: 14px 16px; }
+    #wrap { width: 100%; height: 78vh; min-height: 640px; background-color: #fafafa;
+            border: 1px solid #eee; border-radius: 10px; overflow: hidden; }
+    #canvas { width: 100%; height: 100%; }
+
+    .link { fill:none; stroke:#ccc; stroke-width:2px; transition: all .3s ease; }
+
+    #toast {
+      position: fixed; left: 50%; transform: translateX(-50%);
+      bottom: 18px; padding: 8px 12px; background:#333; color:#fff;
+      border-radius: 8px; font-size: 13px; display:none; z-index: 99999;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <input id="q" placeholder="キーワードを入力（例：深層学習, 文献検索支援）" />
+    <button id="run" title="展開（Enterでも可）">展開</button>
+    <button id="fit" title="表示全体にフィット">Fit</button>
+    <button id="reset" title="ズームをリセット">Reset</button>
+    <button id="back" title="前の中心に戻る">戻る</button>
+    <button id="searchJA" title="日本語で Google Scholar を開く">日本語で検索</button>
+    <button id="searchEN" title="英訳して英語で Google Scholar を開く">英語で検索</button>
+    <div id="chips" aria-label="検索要素チップ領域"></div>
+    <div id="hint" style="font-size: 12px; color: #555; margin-top: 4px;">
+      操作ガイド：
+      クリックで親/子トピックを展開 ／
+      「＋」「−」クリックで開閉 ／
+      Shift＋クリックで選択ノードを中心に検索 ／
+      ダブルクリックで検索要素に追加 ／
+      検索要素のラベルをクリックで削除
+    </div>
+
+  </header>
+
+  <div id="main">
+    <div id="wrap">
+      <svg id="canvas" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid meet"></svg>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+</body>
+</html>
